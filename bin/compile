@@ -66,7 +66,7 @@ echo "export PATH=\$HOME/.heroku/crystal/bin:\$PATH" >> "$BUILD_DIR/.profile.d/c
 cd $BUILD_DIR
 
 start "Installing Dependencies"
-  crystal deps --production
+  shards install --production
 finished
 
 NO_DEBUG_IF_AVAILABLE=`crystal build --help | grep -q -- --no-debug && echo -n --no-debug`

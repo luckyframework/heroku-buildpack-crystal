@@ -77,8 +77,6 @@ start "Installing Dependencies"
 shards install --production
 finished
 
-NO_DEBUG_IF_AVAILABLE=`crystal build --help | grep -q -- --no-debug && echo -n --no-debug`
-
 if [ -f app.cr ]; then
     start "Compiling app.cr (using old behaviour, app.cr exists - ignoring shard.yml)"
     crystal build app.cr --release $NO_DEBUG_IF_AVAILABLE
@@ -86,13 +84,13 @@ if [ -f app.cr ]; then
 else
     eval $(parse_yaml shard.yml "shard_")
     start "Compiling src/${shard_name}.cr (auto-detected from shard.yml)"
-    crystal build src/${shard_name}.cr --release $NO_DEBUG_IF_AVAILABLE -o app
+    crystal build src/${shard_name}.cr --release -o app
     finished
 fi
 
 start "Setting up Lucky tasks"
 
-crystal build tasks.cr $NO_DEBUG_IF_AVAILABLE -o $BUILD_DIR/.heroku/lucky/lucky
+crystal build tasks.cr -o $BUILD_DIR/.heroku/lucky/lucky
 
 echo "export PATH=\$PATH:\$HOME/.heroku/lucky" >> "$BUILD_DIR/.profile.d/lucky_environment.sh"
 

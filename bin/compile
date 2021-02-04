@@ -73,11 +73,12 @@ echo "export PATH=\$HOME/.heroku/crystal/bin:\$PATH" >> "$BUILD_DIR/.profile.d/c
 # Build the project
 cd $BUILD_DIR
 
-if [[ -z "${NEW_LUCKY_BUILD_PROCESS}" ]]; then
-    start "Installing shards and compiling project"
-    shards build --production --release
-    finished
-else
+# TODO: this change seems to tank deploys. Need to figure out how to best version this
+# if [[ -z "${NEW_LUCKY_BUILD_PROCESS}" ]]; then
+#     start "Installing shards and compiling project"
+#     shards build --production --release
+#     finished
+# else
     start "Installing Dependencies"
     shards install --production
     if [ -f app.cr ]; then
@@ -90,7 +91,7 @@ else
         crystal build src/${shard_name}.cr --release -o app
         finished
     fi
-fi
+# fi
 
 start "Setting up Lucky tasks"
 
